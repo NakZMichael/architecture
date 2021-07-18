@@ -1,0 +1,67 @@
+version: "3"
+services:
+  node:
+    container_name: node
+    build: 
+      context: ./
+      dockerfile: ./dockerfiles/server/dev/Dockerfile
+    environment:
+      MARIADB_HOST: localhost
+      MARIADB_DATABASE: node_db
+      MARIADB_USER: node_user
+      MARIADB_PASSWORD: node_password
+    volumes:
+      - .:/home/dev/app
+      # include a line below to speed up install packages.
+      - node_modules_volume:/home/dev/app/node_modules
+    networks: 
+      - node-network
+    tty: true
+    ports:
+      - 127.0.0.1:3000:3000  
+
+  db:
+    container_name: node_db
+    build: 
+      context: ./
+      dockerfile: ./dockerfiles/db/dev/Dockerfile
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: node_root_password
+      MARIADB_DATABASE: node_db
+      MARIADB_USER: node_user
+      MARIADB_PASSWORD: node_password
+    volumes:
+      - node-db:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks: 
+      - node-network
+    tty: true
+
+  test_db:
+    container_name: test_node_db
+    build: 
+      context: ./
+      dockerfile: ./dockerfiles/db/test/Dockerfile
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: node_root_password
+      MARIADB_DATABASE: node_db
+      MARIADB_USER: node_user
+      MARIADB_PASSWORD: node_password
+    volumes:
+      - test-node-db:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks: 
+      - node-network
+    tty: true
+
+volumes:
+  node_modules_volume:
+  node-db:
+  test-node-db:
+
+networks:
+  node-network:

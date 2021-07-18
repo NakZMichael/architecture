@@ -1,0 +1,11 @@
+{
+  "synchronize": true,
+  "logging": false,
+  "entities": [
+    "src/interface-adapter/gateways/entities/*.js"
+  ],
+
+  "cli": {
+    "entitiesDir": "src/interface-adapter/gateways/entities"
+  }
+}

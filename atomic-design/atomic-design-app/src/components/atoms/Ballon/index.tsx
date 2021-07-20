@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css'
 
-interface BalloonProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>{
+interface BalloonProps extends React.ComponentProps<"h1">{
 }
 
 const Balloon:React.FC<BalloonProps> = ({children,className,...props})=> (
